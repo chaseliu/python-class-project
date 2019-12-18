@@ -2,8 +2,8 @@
 import os
 import sqlite3
 
+from . import db
 from .states import InExamState, OutExamState
-from .db import query_questions, query_history, query_history_detail
 
 
 class ExamMachine(object):
@@ -48,7 +48,7 @@ class ExamMachine(object):
 
     def print_history(self):
         """打印答题记录"""
-        for history in query_history(self.conn):
+        for history in db.query_history(self.conn):
             print('id={}\t开始时间={}\t结束时间={}\t得分={}'.format(
                 history[0],
                 history[1][:16],
@@ -58,18 +58,18 @@ class ExamMachine(object):
 
     def load_questions(self, limit=10):
         """从题库中加载题目"""
-        self.questions = list(query_questions(self.conn, limit))
+        self.questions = list(db.query_questions(self.conn, limit))
         self.idx = 0
-        self.history_id = create_history(self.conn)
+        self.history_id = db.create_history(self.conn)
         self.print_current()
 
     def load_answers(self, history_id):
         self.history_id = history_id
-        self.questions = list(query_history_detail(self.conn, self.history_id))
+        self.questions = list(db.query_history_detail(self.conn, self.history_id))
 
     def save_answers(self):
         """保存本次答题的答案"""
-        save_answers(self.conn, self.history_id, self.calc_socre(), self.questions)
+        db.save_answers(self.conn, self.history_id, self.calc_socre(), self.questions)
 
     def calc_socre(self):
         """计算并打印成绩"""
