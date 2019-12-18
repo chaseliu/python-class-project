@@ -4,7 +4,7 @@ import cmd
 from app.machines import ExamMachine
 
 
-class CProgrammingExamShell(cmd.Cmd):
+class ExamMachineShell(cmd.Cmd):
     """命令行应用程序"""
 
     intro = '欢迎使用C语言编程自测系统。输入 help 或 ? 查看命令。\n'
@@ -69,4 +69,4 @@ class CProgrammingExamShell(cmd.Cmd):
 
 
 if __name__ == '__main__':
-    CProgrammingExamShell('c_project.db').cmdloop()
+    ExamMachineShell('c_project.db').cmdloop()
